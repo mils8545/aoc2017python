@@ -2,10 +2,12 @@ from fileinput import filename
 from types import NoneType
 import easygui
 import time
+from itertools import permutations 
 from typing import List
 from typing import Union
 
-AOCDAY: str = "01"
+
+AOCDAY: str = "02"
 
 def readFile(fileName : str) -> List[str]: 
     # Reads the file at fileName and returns a list of lines stripped of newlines
@@ -16,27 +18,29 @@ def readFile(fileName : str) -> List[str]:
     return lines
 
 def parseLines(lines: List[str]) -> List[List[int]]:
-    cells : List[List[int]] = [[int(x) for ]]
+    cells : List[List[int]] = [[int(x) for x in line.split("\t") if x != ""] for line in lines]
+    return cells
+
+def evenDivision(num1: int, num2: int) -> int:
+    if num2 < num1:
+        num1, num2 = num2, num1
+    if num2 % num1 == 0:
+        return num2 // num1
+    else:
+        return 0
 
 def part1(lines) -> str:
-    if lines[0] == None:
-        return "No Code"
-    codeString: str = lines[0]
-    total: int = 0
-    for i in range(len(lines[0])):
-        if codeString[i] == codeString[(i+1)%len(codeString)]:
-            total += int(codeString[i])
-    return f"The captcha solution is {total}"
+    checksum : List[List[int]] = sum([max(line) - min(line) for line in parseLines(lines)])
+    return f"The captcha solution is {checksum}."
 
 def part2(lines) -> str:
-    if lines[0] == None:
-        return "No Code"
-    codeString: str = lines[0]
-    total: int = 0
-    for i in range(len(lines[0])):
-        if codeString[i] == codeString[(i+len(codeString)//2)%len(codeString)]:
-            total += int(codeString[i])
-    return f"The captcha solution is {total}"
+    cells : List[List[int]] = parseLines(lines)
+    total : int = 0
+    for line in cells:
+        perms = permutations(line)
+        for perm in perms:
+            total += evenDivision(perm[0], perm[1])
+    return f"The captcha solution is {total}."
 
 def main ():
     # Opens a dialog to select the input file
