@@ -1,5 +1,3 @@
-from fileinput import filename
-from types import NoneType
 import easygui
 import time
 from typing import List
@@ -27,7 +25,7 @@ def part2(lines : List[str]) -> str:
     return f"Not Implemented"
     pass
 
-def main ():
+def main () -> None:
     # Opens a dialog to select the input file
     # Times and runs both solutions
     # Prints the results

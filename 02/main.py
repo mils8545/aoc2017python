@@ -1,5 +1,3 @@
-from fileinput import filename
-from types import NoneType
 import easygui
 import time
 from itertools import combinations 
@@ -42,7 +40,7 @@ def part2(lines : List[str]) -> str:
             total += evenDivision(perm[0], perm[1])
     return f"The captcha solution is {total}."
 
-def main ():
+def main () -> None:
     # Opens a dialog to select the input file
     # Times and runs both solutions
     # Prints the results
