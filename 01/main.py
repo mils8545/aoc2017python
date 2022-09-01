@@ -15,7 +15,7 @@ def readFile(fileName : str) -> List[str]:
         lines[i] = lines[i].rstrip()
     return lines
 
-def part1(lines) -> str:
+def part1(lines : List[str]) -> str:
     if lines[0] == None:
         return "No Code"
     codeString: str = lines[0]
@@ -25,7 +25,7 @@ def part1(lines) -> str:
             total += int(codeString[i])
     return f"The captcha solution is {total}"
 
-def part2(lines) -> str:
+def part2(lines : List[str]) -> str:
     if lines[0] == None:
         return "No Code"
     codeString: str = lines[0]
@@ -39,9 +39,12 @@ def main ():
     # Opens a dialog to select the input file
     # Times and runs both solutions
     # Prints the results
-    fileName: Union[str,None] = easygui.fileopenbox(default=f"./"+AOCDAY+"/"+"*.txt")
+    fileName : Union[List[str], str, None] = easygui.fileopenbox(default=f"./"+AOCDAY+"/"+"*.txt")
     if fileName == None:
         print("ERROR: No file selected.")
+        return
+    if isinstance(fileName, list):
+        print("ERROR: Script can only take one file.")
         return
     lines: List[str] = readFile(fileName)
     p1StartTime: float = time.perf_counter()

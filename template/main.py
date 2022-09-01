@@ -15,12 +15,12 @@ def readFile(fileName : str) -> List[str]:
         lines[i] = lines[i].rstrip()
     return lines
 
-def part1(lines) -> str:
+def part1(lines : List[str]) -> str:
     # Code the solution to part 1 here, returning the answer as a string
 
     return f"Not Implemented"
 
-def part2(lines) -> str:
+def part2(lines : List[str]) -> str:
     # Code the solution to part 2 here, returning the answer as a string
     
     
@@ -31,9 +31,12 @@ def main ():
     # Opens a dialog to select the input file
     # Times and runs both solutions
     # Prints the results
-    fileName: Union[str,None] = easygui.fileopenbox(default=f"./"+AOCDAY+"/"+"*.txt")
+    fileName : Union[List[str], str, None] = easygui.fileopenbox(default=f"./"+AOCDAY+"/"+"*.txt")
     if fileName == None:
         print("ERROR: No file selected.")
+        return
+    if isinstance(fileName, list):
+        print("ERROR: Script can only take one file.")
         return
     lines: List[str] = readFile(fileName)
     p1StartTime: float = time.perf_counter()

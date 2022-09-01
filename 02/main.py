@@ -2,7 +2,7 @@ from fileinput import filename
 from types import NoneType
 import easygui
 import time
-from itertools import permutations 
+from itertools import combinations 
 from typing import List
 from typing import Union
 
@@ -29,15 +29,15 @@ def evenDivision(num1: int, num2: int) -> int:
     else:
         return 0
 
-def part1(lines) -> str:
-    checksum : List[List[int]] = sum([max(line) - min(line) for line in parseLines(lines)])
+def part1(lines : List[str]) -> str:
+    checksum : int = sum([max(line) - min(line) for line in parseLines(lines)])
     return f"The captcha solution is {checksum}."
 
-def part2(lines) -> str:
+def part2(lines : List[str]) -> str:
     cells : List[List[int]] = parseLines(lines)
     total : int = 0
     for line in cells:
-        perms = permutations(line)
+        perms : List[tuple[int, int]] = list(combinations(line, 2))
         for perm in perms:
             total += evenDivision(perm[0], perm[1])
     return f"The captcha solution is {total}."
@@ -46,9 +46,12 @@ def main ():
     # Opens a dialog to select the input file
     # Times and runs both solutions
     # Prints the results
-    fileName: Union[str,None] = easygui.fileopenbox(default=f"./"+AOCDAY+"/"+"*.txt")
+    fileName : Union[List[str], str, None] = easygui.fileopenbox(default=f"./"+AOCDAY+"/"+"*.txt")
     if fileName == None:
         print("ERROR: No file selected.")
+        return
+    if isinstance(fileName, list):
+        print("ERROR: Script can only take one file.")
         return
     lines: List[str] = readFile(fileName)
     p1StartTime: float = time.perf_counter()
