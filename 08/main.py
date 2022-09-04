@@ -23,7 +23,6 @@ class Instruction:
         self.condVal = condVal
     def __str__(self) -> str:
         return f"Instruction({self.reg}, {self.op}, {self.val}, {self.condReg}, {self.condOp}, {self.condVal})"
-    # c inc -20 if c == 10
 
 def parseLines (lines : List[str]) -> List[Instruction]:
     instructions : List[Instruction] = []

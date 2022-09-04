@@ -50,7 +50,7 @@ def part1(lines : List[str]) -> str:
         i = (i + length + skipSize) % listSize
         skipSize += 1
 
-    return f"{list[0] * list[1]}"
+    return f"The product of the first two hash elements is {list[0] * list[1]}."
 
 def part2(lines : List[str]) -> str:
     lengths : List[int] = [ord(char) for char in lines[0]] + [17, 31, 73, 47, 23]
@@ -64,7 +64,7 @@ def part2(lines : List[str]) -> str:
         for j in range(1,16):
             num ^= knotHash.list[i*16+j]
         hexHash += f"{num:02x}"
-    return hexHash
+    return f"The hash is {hexHash}."
 
 def main () -> None:
     # Opens a dialog to select the input file
