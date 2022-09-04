@@ -42,7 +42,7 @@ def part2(lines : List[str]) -> str:
     furthestDistance : int = 0
     for direction in directions:
         position += directionHexPoints[direction]
-        furthestDistance = max(furthestDistance, position.distance())
+        furthestDistance  : int = max(furthestDistance, position.distance())
     return f"The furthest distance was {furthestDistance}."
 
 def main () -> None:
