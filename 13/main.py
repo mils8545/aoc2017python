@@ -13,57 +13,37 @@ def readFile(fileName : str) -> List[str]:
         lines[i] = lines[i].rstrip()
     return lines
 
-class Sensor:
-    def __init__ (self, num, length):
-        self.num = num
-        self.length = length
-        self.pos = 0
-        self.dir = 1
-    def step(self):
-        self.pos += self.dir
-        if self.pos == self.length - 1 or self.pos == 0:
-            self.dir *= -1
-
-def parseLines(lines : List[str]) -> List[Sensor]:
-    sensors = []
+def parseLines(lines : List[str]) -> List[int]:
+    maxSensor : int = max([int(line.split(": ")[0]) for line in lines])
+    sensors : List[int] = [-1] * (maxSensor + 1)
     for line in lines:
-        num, length = line.split(": ")
-        sensors.append(Sensor(int(num), int(length)))
+        num : int = int(line.split(": ")[0])
+        length : int = int(line.split(": ")[1])
+        sensors[num] = (length - 1) * 2
     return sensors
 
 def part1(lines : List[str]) -> str:
-    sensors = parseLines(lines)
-    maxSensor = sensors[-1].num
-    severity = 0
-    for i in range(maxSensor + 1):
-        for sensor in sensors:
-            if sensor.num == i:
-                if sensor.pos == 0:
-                    severity += sensor.num * sensor.length
-        for sensor in sensors:
-            sensor.step()
+    sensors : List[int] = parseLines(lines)
+    severity : int = 0
+    for i in range(len(sensors)):
+        if sensors[i] != -1 and i % sensors[i] == 0:
+            severity += i * (sensors[i] // 2 + 1)
+
     return str(severity)
 
 def part2(lines : List[str]) -> str:
-    delay = -1
+    sensors : List[int] = parseLines(lines)
+    delay : int = -1
     while True:
         delay += 1
-        sensors = parseLines(lines)
-        maxSensor = sensors[-1].num
-        caught = False
-        for i in range(delay):
-            for sensor in sensors:
-                sensor.step()
-        for i in range(maxSensor + 1):
-            for sensor in sensors:
-                if sensor.num == i:
-                    if sensor.pos == 0:
-                        caught = True
-                        break
-            for sensor in sensors:
-                sensor.step()
+        caught : bool = False
+        for i in range(len(sensors)):
+            if sensors[i] != -1 and (i + delay) % sensors[i] == 0:
+                caught = True
+                break
         if not caught:
-            return f"{delay}"
+            return str(delay)
+
 
 def main () -> None:
     # Opens a dialog to select the input file
