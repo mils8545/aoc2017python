@@ -49,6 +49,7 @@ def byteToBits(byte : int) -> List[bool]:
     bits : List[bool] = []
     for i in range(8):
         bits.append(bool(byte & (1 << i)))
+    bits.reverse()
     return bits
 
 def part1(lines : List[str]) -> str:
@@ -76,6 +77,21 @@ def part1(lines : List[str]) -> str:
 
     return f"There are {count} used sectors."
 
+class Point:
+    def __init__(self, x : int, y : int) -> None:
+        self.x : int = x
+        self.y : int = y
+    def __add__(self, other) -> "Point":
+        return Point(self.x + other.x, self.y + other.y)
+    def __eq__(self, other) -> bool:
+        return self.x == other.x and self.y == other.y
+    def __str__(self) -> str:
+        return f"({self.x}, {self.y})"
+    def oob(self) -> bool:
+        return self.x < 0 or self.x > 127 or self.y < 0 or self.y > 127
+
+DIRECTIONS : List[Point] = [Point(0, 1), Point(1, 0), Point(0, -1), Point(-1, 0)]
+
 def part2(lines : List[str]) -> str:
     salt : str = lines[0]
     gridHash : List[List[int]] = []
@@ -94,12 +110,27 @@ def part2(lines : List[str]) -> str:
         for byte in gridHash[i]:
             for bit in byteToBits(byte):
                 grid[i].append(bit)
-    for line in grid:
-        for bit in line:
-            if bit:
-                count += 1
 
-    return f"Not are {0} regions."
+    regionCount : int = 0
+    seenPoints : List[str] = []
+
+    for y in range(128):
+        for x in range(128):
+            checkPoint : Point = Point(x, y)
+            if grid[y][x] and str(checkPoint) not in seenPoints:
+                regionCount += 1
+                queue : List[Point] = [checkPoint]
+                while queue:
+                    point : Point = queue.pop(0)
+                    if str(point) not in seenPoints:
+                        seenPoints.append(str(point))
+                        for direction in DIRECTIONS:
+                            newPoint : Point = point + direction
+                            if not newPoint.oob():
+                                if grid[newPoint.y][newPoint.x]:
+                                    queue.append(newPoint)
+
+    return f"There are {regionCount} regions."
 
 def main () -> None:
     # Opens a dialog to select the input file
