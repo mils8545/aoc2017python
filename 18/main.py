@@ -142,7 +142,7 @@ def main () -> None:
     p2StartTime: float = time.perf_counter()
     p2Result: str = part2(lines)
     p2EndTime: float = time.perf_counter()
-    print("Advent of Code 2019 Day " + AOCDAY + ":")
+    print("Advent of Code 2017 Day " + AOCDAY + ":")
     print("  Part 1 Execution Time: " + str(round((p1EndTime - p1StartTime)*1000,3)) + " milliseconds")
     print("  Part 1 Result: " + str(p1Result))
     print("  Part 2 Execution Time: " + str(round((p2EndTime - p2StartTime)*1000,3)) + " milliseconds")
